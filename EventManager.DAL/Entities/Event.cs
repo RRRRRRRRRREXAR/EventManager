@@ -16,5 +16,6 @@ namespace EventManager.DAL.Entities
         public string ShortDescription { get; set; }
         public string Description { get; set; }
         public Vectord2D Location { get; set; }
+        public string[] Images {get;set;}
     }
 }

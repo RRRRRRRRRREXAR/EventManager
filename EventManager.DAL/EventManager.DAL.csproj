@@ -312,7 +312,9 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Mongo\EventContext.cs" />
+    <Compile Include="Repositories\EventRepository.cs" />
     <Compile Include="Repositories\ImageRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Types\Vectord2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
