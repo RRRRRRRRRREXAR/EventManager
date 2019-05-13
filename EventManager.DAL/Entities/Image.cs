@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace EventManager.DAL.Entities
 {
-    class Image
+    public class Image
     {
-        [BsonRepresentation(BsonType.ObjectId)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public byte[] Content { get; set; }
+        public string Content { get; set; }
         public int EventId { get; set; }
     }
 }

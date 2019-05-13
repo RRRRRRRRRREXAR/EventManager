@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace EventManager.DAL.Entities
 {
-    public class User
+    public class MongoEvent
     {
+        [BsonRepresentation(BsonType.ObjectId)]
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public int RoleId { get; set; }
+        public string Name { get; set; }
+        public string ShortDescription { get; set; }
+        public string Description { get; set; }
+        public Vectord2D Location { get; set; }
     }
 }
