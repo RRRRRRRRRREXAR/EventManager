@@ -52,9 +52,9 @@ namespace EventManager.DAL.Repositories
             return _dbSet.Where(predicate).ToList();
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            T item = _dbSet.Find(id);
+            T item = _dbSet.Find(Convert.ToInt32(id));
             if (item != null)
             {
                 _dbSet.Remove(item);

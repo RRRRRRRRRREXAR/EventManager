@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventManager.DAL.Entities
+namespace EventMangerBLL.DTO
 {
-    public class EventType
+    public class EventTypeDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -114,17 +114,14 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RaisingStudio.MongoDB.Bson, Version=2.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RaisingStudio.MongoDB.Bson.2.2.5\lib\netstandard1.6\RaisingStudio.MongoDB.Bson.dll</HintPath>
+    <Reference Include="MongoDB.Bson, Version=2.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.8.1\lib\net452\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="RaisingStudio.MongoDB.Driver, Version=2.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RaisingStudio.MongoDB.Driver.2.2.5\lib\netstandard1.6\RaisingStudio.MongoDB.Driver.dll</HintPath>
+    <Reference Include="MongoDB.Driver, Version=2.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.8.1\lib\net452\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="RaisingStudio.MongoDB.Driver.Core, Version=2.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RaisingStudio.MongoDB.Driver.Core.2.2.5\lib\netstandard1.6\RaisingStudio.MongoDB.Driver.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="RaisingStudio.MongoDB.Driver.GridFS, Version=2.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RaisingStudio.MongoDB.Driver.GridFS.2.2.5\lib\netstandard1.6\RaisingStudio.MongoDB.Driver.GridFS.dll</HintPath>
+    <Reference Include="MongoDB.Driver.Core, Version=2.8.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.8.1\lib\net452\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -324,6 +321,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Context\EventContext.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Repositories\MongoEventRepository.cs" />
     <Compile Include="Repositories\EfRepository.cs" />
     <Compile Include="Types\Vectord2D.cs" />

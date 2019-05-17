@@ -17,24 +17,35 @@ namespace EventManager.DAL.Repositories
         EventContext _context;
         IMongoCollection<MongoEvent> _dbSet;
 
+        public MongoEventRepository(EventContext context)
+        {
+            this._context = context;
+            _dbSet = context.database.GetCollection<MongoEvent>("Events");
+        }
+
         public void Create(MongoEvent item)
         {
              _context.MongoEvents.InsertOne(item);
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
              _context.MongoEvents.DeleteOneAsync(new BsonDocument("_id", new ObjectId(Convert.ToString(id))));
         }
         //todo
         public IEnumerable<MongoEvent> Find(Func<MongoEvent, bool> predicate)
         {
-            throw new NotImplementedException();
+            return _dbSet.AsQueryable<MongoEvent>().Where(predicate);
+        }
+
+        public MongoEvent Get(string id)
+        {
+            return  _context.MongoEvents.Find(new BsonDocument("_id", new ObjectId(Convert.ToString(id)))).FirstOrDefault();
         }
 
         public MongoEvent Get(int id)
         {
-            return  _context.MongoEvents.Find(new BsonDocument("_id", new ObjectId(Convert.ToString(id)))).FirstOrDefault();
+            throw new NotImplementedException();
         }
 
         public IEnumerable<MongoEvent> GetAll()

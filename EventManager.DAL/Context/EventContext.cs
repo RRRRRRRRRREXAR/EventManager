@@ -1,6 +1,6 @@
 ﻿using EventManager.DAL.Entities;
+using EventManager.DAL.Interfaces;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,7 +13,6 @@ namespace EventManager.DAL.Context
     public class EventContext:DbContext
     {
         public IMongoDatabase database;
-        public IGridFSBucket gridFS;
         public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -27,14 +26,13 @@ namespace EventManager.DAL.Context
             get { return database.GetCollection<MongoEvent>("Events"); }
         }
 
-
         public EventContext()
         {
-            //string ConnectionString = "mongodb://localhost:27017/EventManager";
-            //var connection = new MongoUrlBuilder(ConnectionString);
-            //MongoClient mongoClient = new MongoClient(ConnectionString);
-            //database = mongoClient.GetDatabase(connection.DatabaseName);
-            //gridFS = new GridFSBucket(database);
+            string ConnectionString = "mongodb://localhost:27017/EventManager";
+            var connection = new MongoUrlBuilder(ConnectionString);
+            MongoClient mongoClient = new MongoClient(ConnectionString);
+            database = mongoClient.GetDatabase(connection.DatabaseName);
         }
+
     }
 }

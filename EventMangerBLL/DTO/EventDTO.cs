@@ -1,20 +1,20 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using EventManager.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventManager.DAL.Entities
+namespace EventMangerBLL.DTO
 {
-    public class MongoEvent
+    public class EventDTO
     {
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string ShortDescription { get; set; }
         public string Description { get; set; }
+        public int UserId { get; set; }
+        public int EventTypeId { get; set; }
         public Vectord2D Location { get; set; }
     }
 }

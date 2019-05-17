@@ -22,7 +22,7 @@ namespace EventManagerDAL.Tests.RepositoriesTests
             bool func(Event d) => d.ShortDescription == "ShortDescription" && d.Description=="TestDescription";
             
             EfRepository<Event> efRepository = new EfRepository<Event>(db);
-         //   efRepository.Create(new Event { Description="TestDescription",ShortDescription="ShortDescription",Name="TestBAne"});
+            efRepository.Create(new Event { Description="TestDescription",ShortDescription="ShortDescription",Name="TestBAne"});
             var k = efRepository.Find(func).First();
             Assert.That(k!=null);
         }
@@ -34,7 +34,7 @@ namespace EventManagerDAL.Tests.RepositoriesTests
             
             EfRepository<Event> efRepository = new EfRepository<Event>(db);
             efRepository.Create(new Event { Description="TestDescription2",ShortDescription="ShortDescription",Name="TestBAne"});
-            efRepository.Delete(efRepository.Find(func).First().Id);
+            efRepository.Delete(Convert.ToString(efRepository.Find(func).First().Id));
             var ex = Assert.Throws<InvalidOperationException>(() => efRepository.Find(func).First());
             Assert.That(ex.Message, Is.EqualTo("Последовательность не содержит элементов"));
         }
@@ -52,6 +52,15 @@ namespace EventManagerDAL.Tests.RepositoriesTests
             EfRepository<Event> efRepository = new EfRepository<Event>(db);
             var k = efRepository.Find(func).First();
             Assert.That(efRepository.Get(k.Id)==k);
+        }
+        [Test]
+        public void UpdateEfEvent()
+        {
+            bool func(Event d) => d.ShortDescription == "ShortDescription" && d.Description == "TestDescription";
+            EfRepository<Event> efRepository = new EfRepository<Event>(db);
+            efRepository.Create(new Event { Description = "TestDescription", ShortDescription = "ShortDescription", Name = "TestBAne" });
+            var k = efRepository.Find(func).First();
+            Assert.That(k != null);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace EventManager.DAL.Entities
         public string ShortDescription { get; set; }
         public string Description { get; set; }
         public int UserId { get; set; }
+        public int EventTypeId { get; set; }
     }
 }
