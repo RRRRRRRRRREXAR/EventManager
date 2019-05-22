@@ -1,5 +1,9 @@
-﻿using EventMangerBLL.DTO;
+﻿using EventManager.DAL.Context;
+using EventManager.DAL.Entities;
+using EventManager.DAL.Interfaces;
+using EventMangerBLL.DTO;
 using EventMangerBLL.Interfaces;
+using EventMangerBLL.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,19 +13,53 @@ using System.Threading.Tasks;
 
 namespace EventMangerBLL
 {
-    public class EventService : IService<EventDTO>
+    public class EventService : IEventService
     {
-        DbContext db { get; set; }
-        public EventService(DbContext context)
+        EventContext db { get; set; }
+        IUnitOfWork Uow { get;set; }
+
+        public EventService(EventContext context)
         {
             db = context;
         }
+
+        public void CreateEvent(EventDTO item)
+        {
+            Uow.MongoEvents.Create(new MongoEvent { });
+            throw new NotImplementedException();
+        }
+
+        public void Update(EventDTO item)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(EventDTO item)
         {
             throw new NotImplementedException();
         }
 
-        public void Dispose()
+        public void Comment(CommentDTO item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UploadImages(IEnumerable<ImageDTO> items)
+        {
+
+            foreach (var element in items)
+            {
+                Uow.Images.Create(new Image {Name=element.Name,Content=SaveImage.Save(element.Content),Id=element.Id,EventId=element.EventId });
+            }
+            Uow.Save();
+        }
+
+        public EventDTO GetItem(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<EventDTO> GetEvents()
         {
             throw new NotImplementedException();
         }
@@ -31,22 +69,7 @@ namespace EventMangerBLL
             throw new NotImplementedException();
         }
 
-        public EventDTO GetItem(int? id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<EventDTO> GetPhones()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Make(EventDTO item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(EventDTO item)
+        public void Dispose()
         {
             throw new NotImplementedException();
         }

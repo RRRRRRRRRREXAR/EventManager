@@ -15,7 +15,7 @@ namespace EventManagerDAL.Tests.RepositoriesTests
     [TestFixture]
     class MongoRepositoryTests
     {
-        EventContext db = new EventContext();
+        EventContext db = new EventContext("TestDatabase");
         [Test]
         public void CreateMongoEvent()
         {

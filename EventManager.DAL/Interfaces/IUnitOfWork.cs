@@ -1,4 +1,5 @@
 ﻿using EventManager.DAL.Entities;
+using EventManager.DAL.Repositories;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,16 @@ using System.Threading.Tasks;
 
 namespace EventManager.DAL.Interfaces
 {
-    interface IUnitOfWork:IDisposable//Useless
+    public interface IUnitOfWork:IDisposable
     {
-         DbSet<Event> Events { get; set; }
-         DbSet<User> Users { get; set; }
-         DbSet<Role> Roles { get; set; }
-         DbSet<Subscription> Subscriptions { get; set; }
-         DbSet<EventType> EventTypes { get; set; }
-         DbSet<Comment> Comments { get; set; }
-         DbSet<Image> Images { get; set; }
-         IMongoCollection<MongoEvent> MongoEvents { get; set; }
+        IRepository<Event> Events { get; }
+        IRepository<User> Users { get;  }
+        IRepository<Role> Roles { get;  }
+        IRepository<Subscription> Subscriptions { get; }
+        IRepository<EventType> EventTypes { get;  }
+        IRepository<Comment> Comments { get;  }
+        IRepository<Image> Images { get;  }
+        IRepository<MongoEvent> MongoEvents { get; }
+        void Save();
     }
 }

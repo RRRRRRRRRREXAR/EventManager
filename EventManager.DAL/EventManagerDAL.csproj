@@ -324,6 +324,7 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Repositories\MongoEventRepository.cs" />
     <Compile Include="Repositories\EfRepository.cs" />
+    <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Types\Vectord2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

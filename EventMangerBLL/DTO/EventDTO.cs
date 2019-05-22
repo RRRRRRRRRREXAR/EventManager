@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace EventMangerBLL.DTO
 {
@@ -16,5 +17,6 @@ namespace EventMangerBLL.DTO
         public int UserId { get; set; }
         public int EventTypeId { get; set; }
         public Vectord2D Location { get; set; }
+        public IEnumerable<HttpPostedFileBase> Images { get; set; }
     }
 }

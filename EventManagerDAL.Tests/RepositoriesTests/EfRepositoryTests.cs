@@ -15,7 +15,7 @@ namespace EventManagerDAL.Tests.RepositoriesTests
     [TestFixture]
     class EfRepositoryTests
     {
-        EventContext db = new EventContext();
+        EventContext db = new EventContext("TestDatabase");
         [Test]
         public void CreateEfEvent()
         {

@@ -25,8 +25,9 @@ namespace EventManager.DAL.Context
         {
             get { return database.GetCollection<MongoEvent>("Events"); }
         }
-
-        public EventContext()
+        
+        
+        public EventContext(string connectionString)
         {
             string ConnectionString = "mongodb://localhost:27017/EventManager";
             var connection = new MongoUrlBuilder(ConnectionString);

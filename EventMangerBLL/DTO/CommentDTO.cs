@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventMangerBLL.DTO
 {
-    public class Comment
+    public class CommentDTO
     {
         public int Id { get; set; }
         public string Text { get; set; }
