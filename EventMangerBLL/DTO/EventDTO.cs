@@ -17,6 +17,7 @@ namespace EventMangerBLL.DTO
         public int UserId { get; set; }
         public int EventTypeId { get; set; }
         public Vectord2D Location { get; set; }
-        public IEnumerable<HttpPostedFileBase> Images { get; set; }
+        public IEnumerable<ImageDTO> Images { get; set; }
+        public string MongoId { get; set; }
     }
 }

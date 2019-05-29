@@ -16,5 +16,6 @@ namespace EventManager.DAL.Entities
         public string Password { get; set; }
         public string Email { get; set; }
         public int RoleId { get; set; }
+        public bool IsEmailConfirmed { get; set; }
     }
 }

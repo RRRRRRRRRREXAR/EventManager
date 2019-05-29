@@ -16,5 +16,7 @@ namespace EventManager.DAL.Entities
         public string ShortDescription { get; set; }
         public string Description { get; set; }
         public Vectord2D Location { get; set; }
+        public int UserId { get; set; }
+        public int EfEventId { get; set; }
     }
 }
