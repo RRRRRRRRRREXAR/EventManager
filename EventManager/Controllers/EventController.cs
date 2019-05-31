@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace EventManager.Controllers
 {
-    public class HomeController : Controller
+    public class EventController : Controller
     {
         public ActionResult Index()
         {

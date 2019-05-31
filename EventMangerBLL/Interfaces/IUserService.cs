@@ -13,6 +13,7 @@ namespace EventMangerBLL.Interfaces
         UserDTO SignIn(Func<User, bool> predicate);
         void SingUp(UserDTO user);
         void ConfirmEmail(UserDTO user);
+        UserDTO Get(int id);
         void Dispose();
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EventMangerBLL.Interfaces
 {
     //to do more service interfaces(((
-    interface IEventService
+    public interface IEventService
     {
         void CreateEvent(EventDTO item);
         void Update(EventDTO item);

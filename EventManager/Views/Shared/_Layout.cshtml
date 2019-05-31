@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@using EventManager.Variables;
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -21,9 +22,19 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Домашняя страница", "Index", "Event")</li>
+                    <li>@Html.ActionLink("О программе", "About", "Event")</li>
+                    <li>@Html.ActionLink("Контакт", "Contact", "Event")</li>
+                    @if (StaticVariables.CurrentUser == null)
+                    {
+                        <li>@Html.ActionLink("Регистрация", "Registration", "User")</li>
+                        <li>@Html.ActionLink("Вход", "Login", "User")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(StaticVariables.CurrentUser.FirstName, "Profile", "User")</li>
+                        <li>@Html.ActionLink("Выход", "Logout", "User")</li>
+                    }
                 </ul>
             </div>
         </div>

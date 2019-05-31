@@ -28,6 +28,12 @@ namespace EventMangerBLL.Services
             Uow.Dispose();
         }
 
+        public UserDTO Get(int id)
+        {
+            var s = Uow.Users.Get(id);
+            return new UserDTO {Id=s.Id, Email=s.Email, FirstName= s.FirstName, IsEmailConfirmed=s.IsEmailConfirmed, LastName=s.LastName, Password=s.Password, RoleId=s.RoleId };
+        }
+
         public UserDTO SignIn(Func<User, bool> predicate)
         {
             try
@@ -37,16 +43,16 @@ namespace EventMangerBLL.Services
             }
             catch
             {
-                return null;
+                throw new ValidationException("Неправильно введена почта или пароль","");
             }
         }
 
         public void SingUp(UserDTO user)
         {
-
             Uow.Users.Create(new EventManager.DAL.Entities.User { Email=user.Email, FirstName= user.FirstName, IsEmailConfirmed=false, LastName= user.LastName, Password= user.Password});
-            new Emailer().SendConfirmationEmail(user);
-            throw new NotImplementedException();
+            Func<User, bool> f = d => d.Email == user.Email;
+            var s = Uow.Users.Find(f).First();
+            new Emailer().SendConfirmationEmail(new UserDTO {Id=s.Id, Email=s.Email, FirstName=s.FirstName,IsEmailConfirmed=s.IsEmailConfirmed, LastName=s.LastName, Password=s.Password, RoleId=s.RoleId});
         }
     }
 }
