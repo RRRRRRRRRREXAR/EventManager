@@ -2,7 +2,7 @@
 {
     public class Vectord2D
     {
-        public decimal X;
-        public decimal Y;
+        public string X;
+        public string Y;
     }
 }

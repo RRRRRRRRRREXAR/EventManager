@@ -24,10 +24,10 @@ namespace EventMangerBLL
 
         public void CreateEvent(EventDTO item)
         {
-            Uow.MongoEvents.Create(new MongoEvent { Description= item.Description, Location=item.Location,Name= item.Name,ShortDescription= item.ShortDescription,EfEventId=item.Id,UserId=item.UserId });
             Uow.Events.Create(new Event {Description= item.Description,ShortDescription= item.ShortDescription, EventTypeId= item.EventTypeId, Name= item.Name, UserId= item.UserId });
             Func<Event, bool> f = d=>d.Name==item.Name && d.ShortDescription==item.ShortDescription&& d.UserId== item.UserId && d.Description== item.Description;
             var currentEvent = Uow.Events.Find(f).First();
+            Uow.MongoEvents.Create(new MongoEvent {Description = item.Description, Location = item.Location, Name = item.Name, ShortDescription = item.ShortDescription, EfEventId = currentEvent.Id, UserId = item.UserId });
             for (int i =0;i<item.Images.Count(); i++)
             {
                 item.Images.ElementAt(i).EventId = currentEvent.Id;
