@@ -24,7 +24,7 @@ namespace EventManager.Controllers
         public ActionResult Index()
         {
             IEnumerable<EventDTO> eventDTOs = service.GetEvents();
-            var mapper = new MapperConfiguration(cfg=>cfg.CreateMap<EventDTO,EventViewModel>()).CreateMapper();
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<EventDTO, EventViewModel>()).CreateMapper();
             var events = mapper.Map<IEnumerable<EventDTO>, List<EventViewModel>>(eventDTOs);
             return View(events);
         }
@@ -35,26 +35,44 @@ namespace EventManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(EventViewModel eventView,IEnumerable<HttpPostedFileBase> imgs)
+        public ActionResult Create(EventViewModel eventView, IEnumerable<HttpPostedFileBase> imgs)
         {
             List<ImageDTO> im = new List<ImageDTO>();
             foreach (var e in imgs)
             {
-                im.Add(new ImageDTO { Content=e});
+                im.Add(new ImageDTO { Content = e });
             }
-            service.CreateEvent(new EventDTO {Description=eventView.Description, EventTypeId=1, Images=im, Location=new DAL.Entities.Vectord2D { X=eventView.Lat,Y=eventView.Lng}, Name=eventView.Name, ShortDescription=eventView.ShortDescription, UserId=StaticVariables.CurrentUser.Id});
-            return View();
+            service.CreateEvent(new EventDTO { Description = eventView.Description, EventTypeId = 1, Images = im, Lat = eventView.Lat, Lng = eventView.Lng, Name = eventView.Name, ShortDescription = eventView.ShortDescription, UserId = StaticVariables.CurrentUser.Id });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult Details(int id)
         {
-            return View(service.GetItem(id));
+            var EEvent = service.GetItem(id);
+            return View(new EventViewModel { Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng });
         }
 
-        public JsonResult GetData()
+        [HttpGet]
+        public ActionResult Delete(int id)
         {
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var EEvent = service.GetItem(id);
+            return View(new EventViewModel { Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng });
+
+        }
+        [HttpPost]
+        public ActionResult Delete(EventViewModel eve)
+        {
+            service.Delete(service.GetItem(eve.Id));
+            return RedirectToAction("Index");
+        }
+
+        public JsonResult GetEvent(int id)
+        {
+            List<EventViewModel> events = new List<EventViewModel>();
+            var s = service.GetItem(id);
+            events.Add(new EventViewModel { Id = s.Id, Description = s.Description, EventTypeId = s.EventTypeId, Images = s.Images, Lat = s.Lat, Lng=s.Lng, MongoId = s.MongoId, Name = s.Name, ShortDescription = s.ShortDescription, UserId = s.UserId });
+            return Json(events, JsonRequestBehavior.AllowGet);
         }
 
     }

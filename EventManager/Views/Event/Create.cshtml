@@ -35,8 +35,8 @@
             placeMarker(event.latLng);
 
             // display the lat/lng in your form's lat/lng fields
-            document.getElementById("latFld").value = event.latLng.lat();
-            document.getElementById("lngFld").value = event.latLng.lng();
+            document.getElementById("Lat").value = event.latLng.lat();
+            document.getElementById("Lng").value = event.latLng.lng();
         });
         
         }
@@ -108,8 +108,8 @@
 
         <div class="form-group">
             <div id="map_canvas" style="height: 200px; width:600px;"></div>
-            @Html.HiddenFor(model => model.Lat, new { htmlAttributes = new { @class = "form-control", @id = "latFld" } })
-            @Html.HiddenFor(model => model.Lng, new { htmlAttributes = new { @class = "form-control", @id = "lngFld" } })
+            @Html.HiddenFor(model => model.Lat)
+            @Html.HiddenFor(model => model.Lng)
         </div>
 
         <div class="form-group">

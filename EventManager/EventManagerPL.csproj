@@ -155,6 +155,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Models\CommentViewModel.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -207,6 +208,7 @@
     <Content Include="Views\User\Logout.cshtml" />
     <Content Include="Views\Event\Create.cshtml" />
     <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Event\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

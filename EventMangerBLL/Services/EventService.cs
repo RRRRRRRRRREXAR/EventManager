@@ -27,7 +27,7 @@ namespace EventMangerBLL
             Uow.Events.Create(new Event {Description= item.Description,ShortDescription= item.ShortDescription, EventTypeId= item.EventTypeId, Name= item.Name, UserId= item.UserId });
             Func<Event, bool> f = d=>d.Name==item.Name && d.ShortDescription==item.ShortDescription&& d.UserId== item.UserId && d.Description== item.Description;
             var currentEvent = Uow.Events.Find(f).First();
-            Uow.MongoEvents.Create(new MongoEvent {Description = item.Description, Location = item.Location, Name = item.Name, ShortDescription = item.ShortDescription, EfEventId = currentEvent.Id, UserId = item.UserId });
+            Uow.MongoEvents.Create(new MongoEvent {Description = item.Description, Name = item.Name, ShortDescription = item.ShortDescription, EfEventId = currentEvent.Id, UserId = item.UserId, Lat=item.Lat, Lng=item.Lng });
             for (int i =0;i<item.Images.Count(); i++)
             {
                 item.Images.ElementAt(i).EventId = currentEvent.Id;
@@ -39,7 +39,7 @@ namespace EventMangerBLL
         public void Update(EventDTO item)
         {
             Uow.Events.Update(new Event {Id=item.Id, Description = item.Description, EventTypeId= item.EventTypeId, Name= item.Name, ShortDescription=item.ShortDescription, UserId= item.UserId });
-            Uow.MongoEvents.Update(new MongoEvent {Id= item.MongoId, UserId= item.UserId, Description = item.Description, EfEventId= item.Id, Location=item.Location, Name=item.Name, ShortDescription = item.ShortDescription });
+            Uow.MongoEvents.Update(new MongoEvent {Id= item.MongoId, UserId= item.UserId, Description = item.Description, EfEventId= item.Id, Name=item.Name, ShortDescription = item.ShortDescription, Lat=item.Lat, Lng=item.Lng });
         }
 
         public void Delete(EventDTO item)
@@ -65,14 +65,15 @@ namespace EventMangerBLL
 
         public EventDTO GetItem(int? id)
         {
-            if (id!=null)
+            if (id != null)
             {
                 var item = Uow.Events.Get(id.Value);
-                var mongoitem = Uow.MongoEvents.Get(id.Value);
+                Func<MongoEvent, bool> findMongoId = d => d.EfEventId == id.Value;
+                var mongoitem = Uow.MongoEvents.Find(findMongoId).First();
                 Func<Image, bool> func = d => d.EventId == item.Id;
                 var imgs = Find(func);
 
-                return new EventDTO {MongoId=mongoitem.Id ,Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, Images = imgs, Location = mongoitem.Location, Name = item.Name, ShortDescription = item.ShortDescription, UserId = item.UserId };
+                return new EventDTO { Lat=mongoitem.Lat, Lng=mongoitem.Lng,MongoId=mongoitem.Id ,Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, Images = imgs, Name = item.Name, ShortDescription = item.ShortDescription, UserId = item.UserId };
             }
             else
             {
@@ -91,7 +92,7 @@ namespace EventMangerBLL
                 Func<Image, bool> imagefinder = d => d.EventId == item.Id;
                 var MongoItem = Uow.MongoEvents.Find(f).First();
                 var imgs = Find(imagefinder);
-                events.Add(new EventDTO { MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, Location = MongoItem.Location, UserId = item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs });
+                events.Add(new EventDTO { MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId,UserId = item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs, Lat = MongoItem.Lat, Lng = MongoItem.Lng });
             }
             return events;
         }
@@ -118,7 +119,7 @@ namespace EventMangerBLL
                 Func<Image, bool> imagefinder = d => d.EventId == item.Id;
                 var MongoItem = Uow.MongoEvents.Find(f).First();
                 var imgs = Find(imagefinder);
-                events.Add(new EventDTO { MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, Location = MongoItem.Location, UserId=item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs});
+                events.Add(new EventDTO { MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, UserId=item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs, Lat = MongoItem.Lat, Lng = MongoItem.Lng });
             }
             return events;
         }
