@@ -21,6 +21,8 @@ namespace EventMangerBLL.Interfaces
         EventDTO GetItem(int? id);
         IEnumerable<EventDTO> GetEvents();
         IEnumerable<EventDTO> Find(Func<Event, bool> predicate);
+        IEnumerable<CommentDTO> GetComments(int EventId);
+        IEnumerable<EventDTO> GetSubcriptions(int UserId);
         void Dispose();
     }
 }

@@ -39,7 +39,7 @@
                     var eve= new google.maps.Marker({
                         'position': new google.maps.LatLng(item.Lat, item.Lng),
                         'map': map,
-                        'title': item.Event.Name
+                        'title': item.Name
                     });
 
                     // Берем для этих маркеров синие иконки с сайта google
@@ -62,61 +62,70 @@
 }
 
 <h2>Details</h2>
-
-<div>
-    <h4>EventViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.ShortDescription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.ShortDescription)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Event.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Event.Description)
-        </dd>
-        @foreach (var im in Model.Event.Images)
-        {
-            <dd>
-                <img src=@Url.Content(im.Link) class="img-thumbnail" width="50" height="50" />
-            </dd>
-        }
-
-
-    </dl>
-</div>
-<div class="form-group">
-    <div id="map_canvas" style="height: 200px; width:600px;"></div>
-</div>
-
-
-@using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CreateComment/" + Model.Event.Id, "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
- 
 
-<div class="form-group">
-    @*@Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
-    <div class="col-md-10">
-        @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
-    </div>*@
-</div>
+
+    <div>
+        <h4>EventViewModel</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Event.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Event.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Event.ShortDescription)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Event.ShortDescription)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Event.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Event.Description)
+            </dd>
+            @foreach (var im in Model.Event.Images)
+            {
+                <dd>
+                    <img src=@Url.Content(im.Link) class="img-thumbnail" width="50" height="50" />
+                </dd>
+            }
+
+            @foreach (var cm in Model.Comments)
+            {
+                <dt>
+                    <b>@cm.UserId</b>
+                </dt>
+                <dd>
+                    <b>@cm.Text</b>
+                </dd>
+            }
+
+        </dl>
+    </div>
+    <div class="form-group">
+        <div id="map_canvas" style="height: 200px; width:600px;"></div>
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Comment.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Comment.Text, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Comment.Text, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -125,6 +134,30 @@
     </div>
 
 }
+@if (Model.IsSubscribed == false)
+{
+    using (Html.BeginForm("Subscribe/" + Model.Event.Id, "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Подписаться" class="btn btn-default" />
+            </div>
+        </div>
+    }
+}
+else
+{
+using (Html.BeginForm("Unsubscribe/" + Model.Event.Id, "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Отписаться" class="btn btn-default" />
+    </div>
+</div>
+    }
+}
+
+
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>

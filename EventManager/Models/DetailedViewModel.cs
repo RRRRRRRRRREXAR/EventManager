@@ -9,5 +9,7 @@ namespace EventManager.Models
     {
         public IEnumerable<CommentViewModel> Comments { get; set; }
         public EventViewModel Event { get; set; }
+        public CommentViewModel Comment { get;set; }
+        public bool IsSubscribed { get; set; }
     }
 }

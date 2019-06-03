@@ -46,7 +46,27 @@ namespace EventMangerBLL
         {
             Uow.Events.Delete(item.Id.ToString());
             Uow.MongoEvents.Delete(item.MongoId);
+            Func<Comment, bool> commById = d => d.EventId == item.Id;
+            var comments = Uow.Comments.Find(commById);
+            foreach (var com in comments)
+            {
+                Uow.Comments.Delete(com.Id.ToString());
+            }
+            Func<Subscription, bool> subById = d => d.EventId == item.Id;
+            var subscriptions = Uow.Subscriptions.Find(subById);
+            foreach (var sub in subscriptions)
+            {
+                Uow.Subscriptions.Delete(sub.Id.ToString());
+            }
+            Func<Image, bool> ImageById = d => d.EventId == item.Id;
+            var images = Uow.Images.Find(ImageById);
+            foreach (var img in images)
+            {
+                Uow.Images.Delete(img.Id.ToString());
+            }
         }
+
+        
 
         public void Comment(CommentDTO item)
         {
@@ -151,6 +171,18 @@ namespace EventMangerBLL
                 evnts.Add(GetItem(element.EventId));
             }
             return evnts;
+        }
+
+        public IEnumerable<CommentDTO> GetComments(int EventId)
+        {
+            Func<Comment, bool> f = d => d.EventId == EventId;
+            var items= Uow.Comments.Find(f);
+            List<CommentDTO> comments = new List<CommentDTO>();
+            foreach (var item in items)
+            {
+                comments.Add(new CommentDTO {Id=item.Id, EventId=item.EventId, Text=item.Text, UserId=item.UserId });
+            }
+            return comments;
         }
     }
 }

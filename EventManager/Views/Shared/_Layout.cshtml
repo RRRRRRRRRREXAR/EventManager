@@ -18,13 +18,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Имя приложения", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Домашняя страница", "Index", "Event")</li>
-                    <li>@Html.ActionLink("О программе", "About", "Event")</li>
-                    <li>@Html.ActionLink("Контакт", "Contact", "Event")</li>
                     @if (StaticVariables.CurrentUser == null)
                     {
                         <li>@Html.ActionLink("Регистрация", "Registration", "User")</li>
@@ -32,6 +29,7 @@
                     }
                     else
                     {
+                        <li>@Html.ActionLink("Подписки", "Subscriptions", "Event")</li>
                         <li>@Html.ActionLink(StaticVariables.CurrentUser.FirstName, "Profile", "User")</li>
                         <li>@Html.ActionLink("Выход", "Logout", "User")</li>
                     }
