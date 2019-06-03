@@ -156,6 +156,7 @@
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Models\CommentViewModel.cs" />
+    <Compile Include="Models\DetailedViewModel.cs" />
     <Compile Include="Variables\Variables.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -50,7 +50,9 @@ namespace EventManager.Controllers
         public ActionResult Details(int id)
         {
             var EEvent = service.GetItem(id);
-            return View(new EventViewModel { Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng });
+            DetailedViewModel detailedView = new DetailedViewModel();
+            detailedView.Event = new EventViewModel { Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng };
+            return View(detailedView);
         }
 
         [HttpGet]
@@ -75,5 +77,12 @@ namespace EventManager.Controllers
             return Json(events, JsonRequestBehavior.AllowGet);
         }
 
+        
+        [HttpPost]
+        public EmptyResult CreateComment(CommentViewModel commentView)
+        {
+            service.Comment(new CommentDTO {EventId=commentView.EventId, Text=commentView.Text, UserId=StaticVariables.CurrentUser.Id });
+            return new EmptyResult();
+        }
     }
 }

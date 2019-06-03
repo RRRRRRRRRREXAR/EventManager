@@ -1,4 +1,5 @@
-﻿@model EventManager.Models.EventViewModel
+﻿@model EventManager.Models.DetailedViewModel
+
 
 
 @{
@@ -32,13 +33,13 @@
         // Встраиваем гугл-карты в элемент на странице и получаем объект карты
          map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-            $.getJSON('@Url.Action("GetEvent/"+Model.Id,"Event")', function (data) {
+            $.getJSON('@Url.Action("GetEvent/"+Model.Event.Id,"Event")', function (data) {
                 // Проходим по всем данным и устанавливаем для них маркеры
                 $.each(data, function (i, item) {
                     var eve= new google.maps.Marker({
                         'position': new google.maps.LatLng(item.Lat, item.Lng),
                         'map': map,
-                        'title': item.Name
+                        'title': item.Event.Name
                     });
 
                     // Берем для этих маркеров синие иконки с сайта google
@@ -47,7 +48,7 @@
                     // Для каждого объекта добавляем доп. информацию, выводимую в отдельном окне
                     var infowindow = new google.maps.InfoWindow({
                         content: "<div class='stationInfo'><h2>Название " + item.Name + "</h2><div><h4> "
-                            + item.ShortDescription + "</h4></div><div><h4> " + item.EventTypeId + " </h4></div></div>"
+                            + item.Event.ShortDescription + "</h4></div><div><h4> " + item.EventTypeId + " </h4></div></div>"
                     });
 
                     // обработчик нажатия на маркер объекта
@@ -67,29 +68,29 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Event.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Event.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ShortDescription)
+            @Html.DisplayNameFor(model => model.Event.ShortDescription)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ShortDescription)
+            @Html.DisplayFor(model => model.Event.ShortDescription)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Event.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Event.Description)
         </dd>
-        @foreach (var im in Model.Images)
+        @foreach (var im in Model.Event.Images)
         {
             <dd>
                 <img src=@Url.Content(im.Link) class="img-thumbnail" width="50" height="50" />
