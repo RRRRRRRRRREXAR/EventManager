@@ -20,5 +20,6 @@ namespace EventManager.Models
         public string Lng { get; set; }
         public IEnumerable<ImageDTO> Images { get; set; }
         public string MongoId { get; set; }
+        public UserViewModel Owner { get; set; }
     }
 }

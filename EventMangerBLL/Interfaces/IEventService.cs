@@ -18,6 +18,7 @@ namespace EventMangerBLL.Interfaces
         void UploadImages(IEnumerable<ImageDTO> items);
         void Subscribe(EventDTO item,int UserId);
         void Unsubscribe(EventDTO item, int UserId);
+        UserDTO GetOwner(int id);
         EventDTO GetItem(int? id);
         IEnumerable<EventDTO> GetEvents();
         IEnumerable<EventDTO> Find(Func<Event, bool> predicate);

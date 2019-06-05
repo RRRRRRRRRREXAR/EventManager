@@ -23,10 +23,16 @@ namespace EventManager.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            IEnumerable<EventDTO> eventDTOs = service.GetEvents();
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<EventDTO, EventViewModel>()).CreateMapper();
-            var events = mapper.Map<IEnumerable<EventDTO>, List<EventViewModel>>(eventDTOs);
-            return View(events);
+
+            var events = service.GetEvents();
+           List<EventViewModel> eventViews = new List<EventViewModel>();
+           foreach (var s in events)
+           {
+                var owner = service.GetOwner(s.UserId);
+                eventViews.Add(new EventViewModel {Owner=new UserViewModel { FirstName=owner.FirstName, LastName=owner.LastName },Id = s.Id, Description = s.Description, EventTypeId = s.EventTypeId, Images = s.Images, Lat = s.Lat, Lng = s.Lng, MongoId = s.MongoId, Name = s.Name, ShortDescription = s.ShortDescription, UserId = s.UserId });
+           }
+           return View(eventViews);
+           
         }
         [HttpGet]
         public ActionResult Create()
@@ -91,7 +97,8 @@ namespace EventManager.Controllers
                 List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
                 foreach (var item in commentDTOs)
                 {
-                    commentViewModels.Add(new CommentViewModel { Id = item.Id, EventId = item.EventId, Text = item.Text, UserId = item.UserId });
+                    var owner = service.GetOwner(item.UserId);
+                    commentViewModels.Add(new CommentViewModel {  Owner=new UserViewModel {Id=owner.Id, Email=owner.Email, FirstName=owner.FirstName, IsEmailConfirmed=owner.IsEmailConfirmed, LastName=owner.LastName, Password=owner.Password, RoleId=owner.RoleId },Id = item.Id, EventId = item.EventId, Text = item.Text, UserId = item.UserId });
                 }
                 detailedView.Comments = commentViewModels;
                 var subs = service.GetSubcriptions(StaticVariables.CurrentUser.Id);

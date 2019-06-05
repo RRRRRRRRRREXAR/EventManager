@@ -27,8 +27,16 @@ namespace EventManager.Controllers
         [HttpPost]
         public ActionResult Registration(UserViewModel user)
         {
-            service.SingUp(new EventMangerBLL.DTO.UserDTO {Email=user.Email, FirstName=user.FirstName,LastName=user.LastName, Password=user.Password });
-            return View();
+            try
+            {
+                service.SingUp(new EventMangerBLL.DTO.UserDTO { Email = user.Email, FirstName = user.FirstName, LastName = user.LastName, Password = user.Password });
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("Email",ex);
+                return View(user);
+            }
+            return RedirectToAction("Index","Event");
         }
         [HttpGet]
         public ActionResult Login()
@@ -45,7 +53,8 @@ namespace EventManager.Controllers
                var s= service.SignIn(f);
                 if (s.IsEmailConfirmed!=true)
                 {
-                    throw new ValidationException("Подтвердите почту","");
+                    ModelState.AddModelError("Email", new ValidationException("Подтвердите почту", ""));
+                    return View(user);
                 }
                 else
                 {

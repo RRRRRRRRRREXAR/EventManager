@@ -68,8 +68,6 @@
 
 
     <div>
-        <h4>EventViewModel</h4>
-        <hr />
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(model => model.Event.Name)
@@ -101,23 +99,26 @@
                 </dd>
             }
 
-            @foreach (var cm in Model.Comments)
-            {
-                <dt>
-                    <b>@cm.UserId</b>
-                </dt>
-                <dd>
-                    <b>@cm.Text</b>
-                </dd>
-            }
+
 
         </dl>
     </div>
     <div class="form-group">
         <div id="map_canvas" style="height: 200px; width:600px;"></div>
     </div>
-
-
+    <div>
+        <dl class="dl-horizontal">
+            @foreach (var cm in Model.Comments)
+            {
+                <dt>
+                    <b>@cm.Owner.FirstName</b>
+                </dt>
+                <dd>
+                    <b>@cm.Text</b>
+                </dd>
+            }
+        </dl>
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Comment.Text, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -147,13 +148,13 @@
 }
 else
 {
-using (Html.BeginForm("Unsubscribe/" + Model.Event.Id, "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    using (Html.BeginForm("Unsubscribe/" + Model.Event.Id, "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Отписаться" class="btn btn-default" />
-    </div>
-</div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Отписаться" class="btn btn-default" />
+            </div>
+        </div>
     }
 }
 

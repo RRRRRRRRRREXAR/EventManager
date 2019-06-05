@@ -184,5 +184,11 @@ namespace EventMangerBLL
             }
             return comments;
         }
+
+        public UserDTO GetOwner(int id)
+        {
+            var owner = Uow.Users.Get(id);
+            return new UserDTO { Id = owner.Id, Email = owner.Email, FirstName = owner.FirstName, IsEmailConfirmed = owner.IsEmailConfirmed, LastName = owner.LastName, Password = owner.Password, RoleId = owner.RoleId };
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace EventManager.Models
         public string Text { get; set; }
         public int UserId { get; set; }
         public int EventId { get; set; }
+        public UserViewModel Owner {get;set;}
     }
 }
