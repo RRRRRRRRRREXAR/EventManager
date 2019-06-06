@@ -29,10 +29,11 @@ namespace EventManager.DAL.Context
         
         public EventContext(string connectionString)
         {
-            string ConnectionString = "mongodb://localhost:27017/EventManager";
+            string ConnectionString = "mongodb://localhost:27017/EventManager"; 
+           // string ConnectionString = "mongodb+srv://m001-student:<m001-mongodb-basics>@cluster0-moaca.mongodb.net/test?retryWrites=true&w=majority";
             var connection = new MongoUrlBuilder(ConnectionString);
             MongoClient mongoClient = new MongoClient(ConnectionString);
-            database = mongoClient.GetDatabase(connection.DatabaseName);
+            database = mongoClient.GetDatabase("Events");
         }
 
     }
