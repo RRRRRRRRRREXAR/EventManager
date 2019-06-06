@@ -10,35 +10,35 @@
     <script type="text/javascript">
         var map;
         var markersArray = [];
-    $(document).ready(function () {
-        GetMap();
-    });
-
-    // Функция загрузки
-    function GetMap() {
-        
-        google.maps.visualRefresh = true;
-        // установка основных координат
-        var Minsk = new google.maps.LatLng(53.9045398, 27.5615244);
-
-        // Установка общих параметров отображения карты, как масштаб, центральная точка и тип карты
-        var mapOptions = {
-            zoom: 15,
-            center: Minsk,
-            mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
-        };
-
-        // Встраиваем гугл-карты в элемент на странице и получаем объект карты
-         map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-        google.maps.event.addListener(map, "click", function (event) {
-            // place a marker
-            placeMarker(event.latLng);
-
-            // display the lat/lng in your form's lat/lng fields
-            document.getElementById("Lat").value = event.latLng.lat();
-            document.getElementById("Lng").value = event.latLng.lng();
+        $(document).ready(function () {
+            GetMap();
         });
-        
+
+        // Функция загрузки
+        function GetMap() {
+
+            google.maps.visualRefresh = true;
+            // установка основных координат
+            var Minsk = new google.maps.LatLng(53.9045398, 27.5615244);
+
+            // Установка общих параметров отображения карты, как масштаб, центральная точка и тип карты
+            var mapOptions = {
+                zoom: 15,
+                center: Minsk,
+                mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+            };
+
+            // Встраиваем гугл-карты в элемент на странице и получаем объект карты
+            map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+            google.maps.event.addListener(map, "click", function (event) {
+                // place a marker
+                placeMarker(event.latLng);
+
+                // display the lat/lng in your form's lat/lng fields
+                document.getElementById("Lat").value = event.latLng.lat();
+                document.getElementById("Lng").value = event.latLng.lng();
+            });
+
         }
         function placeMarker(location) {
             // first remove all markers if there are any
@@ -51,7 +51,7 @@
 
             // add marker in markers array
             markersArray.push(marker);
-            
+
         }
 
         // Deletes all markers in the array by removing references to them
@@ -64,13 +64,13 @@
             }
         }
     </script>
-    }
+}
 
-    <h2>Создать мероприятие</h2>
+<h2>Создать мероприятие</h2>
 
-    @using (Html.BeginForm("Create", "Event", FormMethod.Post,new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken()
+@using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -100,7 +100,7 @@
 
         <div class="form-group">
             <div class="col-md-10">
-                <input type="file" name="imgs" class="btn-default" multiple/><br>
+                <input type="file" name="imgs" class="btn-default" multiple /><br>
             </div>
         </div>
 
@@ -116,8 +116,9 @@
             </div>
         </div>
     </div>
-    }
+}
 
-    <div>
-        @Html.ActionLink("Вернуться к списку", "Index")
-    </div>
+<div>
+    @Html.ActionLink("Вернуться к списку", "Index")
+</div>
+

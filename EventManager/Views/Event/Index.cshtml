@@ -6,16 +6,16 @@
 }
 
 <h2>Главная</h2>
-@if(StaticVariables.CurrentUser!=null)
+@if (StaticVariables.CurrentUser != null)
 {
     <p>
         @Html.ActionLink("Создать новое мероприятие", "Create")
     </p>
 }
-    <div class="card-group">
-            @foreach (var item in Model)
-            {
-                <div class="card" style="width: 18rem;">
+<div class="container" style="display: flex;display: -webkit-flex;display:-moz-flex;flex-flow: row wrap;-webkit-flex-flow: row wrap;-moz-flex-flow: row wrap;">
+        @foreach (var item in Model)
+        {
+                <div class="card" style="width:20em">
                     <img class="card-img-top" style="width:17em;height:15em;" src=@Url.Content(item.Images.Last().Link) col alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title" id="Name"> @Html.DisplayFor(modelItem => item.Name)</h5>
@@ -34,7 +34,8 @@
                         }
                     </div>
                 </div>
-            }
-    </div>
-            
-        
+        }
+</div>
+
+
+
