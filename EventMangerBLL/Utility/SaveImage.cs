@@ -16,7 +16,7 @@ namespace EventMangerBLL.Utility
             if (img!=null)
             {
                 var fileName = new Random().Next(0, 234444).ToString()+ Path.GetFileName(img.FileName);
-                
+                fileName = fileName.Replace(" ","");
                 img.SaveAs(System.Web.HttpContext.Current.Server.MapPath("~/Data/Pictures/" + fileName));
 
                 return "~/Data/Pictures/" + fileName;
