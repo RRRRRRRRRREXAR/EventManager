@@ -3,7 +3,9 @@
 
 
 @{
-    ViewBag.Title = "Details";
+                /**/
+
+                ViewBag.Title = "Details";
 }
 
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyCpuXscFeQ-TCFkQkbIGUBYu5odK3E9CB4&sensor=true" type="text/javascript"></script>
@@ -67,45 +69,58 @@
     @Html.AntiForgeryToken()
 
 
-    <div>
-        <dl class="dl-horizontal">
-            <dt>
-                <label class="control-label col-md-2" for="Name">Название</label>
-            </dt>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            <label class="control-label col-md-2" for="Name">Название</label>
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Event.Name)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Event.Name)
+        </dd>
 
-            <dt>
-                <label class="control-label col-md-2" for="ShortDescription">Краткое описание</label>
-            </dt>
+        <dt>
+            <label class="control-label col-md-2" for="ShortDescription">Краткое описание</label>
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Event.ShortDescription)
-            </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Event.ShortDescription)
+        </dd>
 
-            <dt>
-                <label class="control-label col-md-2" for="Description">Описание</label>
-            </dt>
+        <dt>
+            <label class="control-label col-md-2" for="Description">Описание</label>
+        </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.Event.Description)
-            </dd>
-            @foreach (var im in Model.Event.Images)
-            {
-                <dd>
-                    <img src=@Url.Content(im.Link) class="img-thumbnail" width="50" height="50" />
-                </dd>
-            }
+        <dd>
+            @Html.DisplayFor(model => model.Event.Description)
+        </dd>
+
+        <dt>
+            <label class="control-label col-md-2" for="Time">Дата</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event.Time)
+        </dd>
 
 
+    </dl>
+    <div class="container">
+        @foreach (var im in Model.Event.Images)
+        {
+            <figure class="col-lg-3 col-md-4 col-xs-6">
+                
+                <a href=@Url.Content(im.Link) data-size="1600x1067">
+                    <img src=@Url.Content(im.Link) class="img-fluid" width="400" />
+                </a>
+            </figure>
+        }
 
-        </dl>
     </div>
-    <div class="form-group">
-        <div id="map_canvas" style="height: 200px; width:600px;"></div>
-    </div>
+</div>
+    
+        <div id="map_canvas" style="height: 200px; width:600px; margin-top:3%"></div>
+    
     <div>
         <dl class="dl-horizontal">
             @foreach (var cm in Model.Comments)
@@ -121,7 +136,7 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-md-2" for="Text">Название</label>
+        <label class="control-label col-md-2" for="Text">Поле ввода</label>
         <div class="col-md-10">
             @Html.EditorFor(model => model.Comment.Text, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Comment.Text, "", new { @class = "text-danger" })

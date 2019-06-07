@@ -12,29 +12,53 @@
         @Html.ActionLink("Создать новое мероприятие", "Create")
     </p>
 }
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <p>
+                    @Html.ActionLink("По дате", "Index", new { sortOrder = "Date" })
+                </p>
+            </div>
+            <div class="col-md-3">
+                <p>
+                    @Html.ActionLink("По популярности", "Index", new { sortOrder = "SubsCount" })
+                </p>
+            </div>
+            <div class="col-md-3">
+                    @using (Html.BeginForm("Index", "Event", FormMethod.Get))
+                    {
+                        @Html.TextBox("SearchString")
+                        <input type="submit" value="Search" />
+                    }
+            </div>
+        </div>
+    </div>
+
 <div class="container" style="display: flex;display: -webkit-flex;display:-moz-flex;flex-flow: row wrap;-webkit-flex-flow: row wrap;-moz-flex-flow: row wrap;">
-        @foreach (var item in Model)
-        {
-                <div class="card" style="width:20em">
-                    <img class="card-img-top" style="width:17em;height:15em;" src=@Url.Content(item.Images.Last().Link) col alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title" id="Name"> @Html.DisplayFor(modelItem => item.Name)</h5>
-                        @Html.DisplayFor(modelItem => item.Owner.FirstName)
-                        @Html.DisplayFor(modelItem => item.Owner.LastName)
-                        <p class="card-text" id="ShortDescription">@Html.DisplayFor(modelItem => item.ShortDescription)</p>
-                    </div>
-                    <div class="card-body">
-                        @if (StaticVariables.CurrentUser != null)
-                        {
-                            @Html.ActionLink("Подробнее ", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
-                            if (StaticVariables.CurrentUser.Id == item.UserId)
-                            {
-                                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
-                            }
-                        }
-                    </div>
-                </div>
-        }
+    @foreach (var item in Model)
+    {
+        <div class="card" style="width:20em">
+            <img class="card-img-top" style="width:17em;height:15em;" src=@Url.Content(item.Images.Last().Link) col alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title" id="Name"> @Html.DisplayFor(modelItem => item.Name)</h5>
+                @Html.DisplayFor(modelItem => item.Owner.FirstName)
+                @Html.DisplayFor(modelItem => item.Owner.LastName)
+                <p class="card-text" id="ShortDescription">@Html.DisplayFor(modelItem => item.ShortDescription)</p>
+
+            </div>
+            <div class="card-body">
+                @if (StaticVariables.CurrentUser != null)
+                {
+                    @Html.ActionLink("Подробнее ", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    if (StaticVariables.CurrentUser.Id == item.UserId)
+                    {
+                        @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    }
+                }
+            </div>
+            <p class="card-footer"> @Html.DisplayFor(modelItem => item.Time)</p>
+        </div>
+    }
 </div>
 
 

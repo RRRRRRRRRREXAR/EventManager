@@ -16,9 +16,11 @@ namespace EventMangerBLL.DTO
         public string Description { get; set; }
         public int UserId { get; set; }
         public int EventTypeId { get; set; }
+        public DateTime Time { get; set; }
         public string Lat;
         public string Lng;
         public IEnumerable<ImageDTO> Images { get; set; }
         public string MongoId { get; set; }
+        public int SubsCount { get; set; }
     }
 }

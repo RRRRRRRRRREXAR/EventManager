@@ -2,6 +2,7 @@
 using EventManager.DAL.Entities;
 using EventManager.DAL.Interfaces;
 using EventMangerBLL.DTO;
+using EventMangerBLL.Infrastructure;
 using EventMangerBLL.Interfaces;
 using EventMangerBLL.Utility;
 using System;
@@ -24,7 +25,7 @@ namespace EventMangerBLL
 
         public void CreateEvent(EventDTO item)
         {
-            Uow.Events.Create(new Event {Description= item.Description,ShortDescription= item.ShortDescription, EventTypeId= item.EventTypeId, Name= item.Name, UserId= item.UserId });
+            Uow.Events.Create(new Event { Time=item.Time,Description= item.Description,ShortDescription= item.ShortDescription, EventTypeId= item.EventTypeId, Name= item.Name, UserId= item.UserId });
             Func<Event, bool> f = d=>d.Name==item.Name && d.ShortDescription==item.ShortDescription&& d.UserId== item.UserId && d.Description== item.Description;
             var currentEvent = Uow.Events.Find(f).First();
             Uow.MongoEvents.Create(new MongoEvent {Description = item.Description, Name = item.Name, ShortDescription = item.ShortDescription, EfEventId = currentEvent.Id, UserId = item.UserId, Lat=item.Lat, Lng=item.Lng });
@@ -36,10 +37,29 @@ namespace EventMangerBLL
             
         }
 
-        public void Update(EventDTO item)
+        public void Update(EventDTO item,bool imgChanged)
         {
-            Uow.Events.Update(new Event {Id=item.Id, Description = item.Description, EventTypeId= item.EventTypeId, Name= item.Name, ShortDescription=item.ShortDescription, UserId= item.UserId });
+            Uow.Events.Update(new Event {Time=item.Time,Id=item.Id, Description = item.Description, EventTypeId= item.EventTypeId, Name= item.Name, ShortDescription=item.ShortDescription, UserId= item.UserId });
             Uow.MongoEvents.Update(new MongoEvent {Id= item.MongoId, UserId= item.UserId, Description = item.Description, EfEventId= item.Id, Name=item.Name, ShortDescription = item.ShortDescription, Lat=item.Lat, Lng=item.Lng });
+            if (imgChanged==true)
+            {
+                Func<Image, bool> imageByEventId = d => d.EventId == item.Id;
+                var imgs = Uow.Images.Find(imageByEventId);
+                foreach (var im in imgs)
+                {
+                    Uow.Images.Delete(im.Id.ToString());
+                }
+                UploadImages(item.Images);
+            }
+            Func<Subscription, bool> findSub = d => d.EventId == item.EventTypeId;
+            var subs = Uow.Subscriptions.Find(findSub);
+            Emailer email = new Emailer();
+            foreach (var s in subs)
+            {
+                var eve= Uow.Events.Get(s.EventId);
+                var use = Uow.Users.Get(s.UserId);
+                email.SendNotification(new UserDTO {Id=use.Id, Email=use.Email, FirstName=use.FirstName, LastName=use.LastName } , new EventDTO { Id=eve.Id, Description=eve.Description, EventTypeId=eve.EventTypeId, Name =eve.Name, ShortDescription=eve.ShortDescription});
+            }
         }
 
         public void Delete(EventDTO item)
@@ -92,8 +112,8 @@ namespace EventMangerBLL
                 var mongoitem = Uow.MongoEvents.Find(findMongoId).First();
                 Func<Image, bool> func = d => d.EventId == item.Id;
                 var imgs = Find(func);
-
-                return new EventDTO { Lat=mongoitem.Lat, Lng=mongoitem.Lng,MongoId=mongoitem.Id ,Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, Images = imgs, Name = item.Name, ShortDescription = item.ShortDescription, UserId = item.UserId };
+                
+                return new EventDTO { Time=item.Time,Lat=mongoitem.Lat, Lng=mongoitem.Lng,MongoId=mongoitem.Id ,Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, Images = imgs, Name = item.Name, ShortDescription = item.ShortDescription, UserId = item.UserId };
             }
             else
             {
@@ -112,7 +132,8 @@ namespace EventMangerBLL
                 Func<Image, bool> imagefinder = d => d.EventId == item.Id;
                 var MongoItem = Uow.MongoEvents.Find(f).First();
                 var imgs = Find(imagefinder);
-                events.Add(new EventDTO { MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId,UserId = item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs, Lat = MongoItem.Lat, Lng = MongoItem.Lng });
+                Func<Subscription, bool> findSubscribers = d => d.EventId == item.Id;
+                events.Add(new EventDTO { SubsCount = Uow.Subscriptions.Find(findSubscribers).Count(), Time=item.Time,MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId,UserId = item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs, Lat = MongoItem.Lat, Lng = MongoItem.Lng });
             }
             return events;
         }
@@ -139,7 +160,7 @@ namespace EventMangerBLL
                 Func<Image, bool> imagefinder = d => d.EventId == item.Id;
                 var MongoItem = Uow.MongoEvents.Find(f).First();
                 var imgs = Find(imagefinder);
-                events.Add(new EventDTO { MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, UserId=item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs, Lat = MongoItem.Lat, Lng = MongoItem.Lng });
+                events.Add(new EventDTO {Time=item.Time, MongoId = MongoItem.Id, Id = item.Id, Description = item.Description, EventTypeId = item.EventTypeId, UserId=item.UserId, Name = item.Name, ShortDescription = item.ShortDescription, Images = imgs, Lat = MongoItem.Lat, Lng = MongoItem.Lng });
             }
             return events;
         }

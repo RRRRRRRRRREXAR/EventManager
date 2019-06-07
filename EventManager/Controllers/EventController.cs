@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventManager.DAL.Entities;
 using EventManager.Models;
 using EventManager.Variables;
 using EventMangerBLL.DTO;
@@ -20,26 +21,51 @@ namespace EventManager.Controllers
             service = eventService;
         }
 
-        [HttpGet]
-        public ActionResult Index()
-        {
 
-            var events = service.GetEvents();
-           List<EventViewModel> eventViews = new List<EventViewModel>();
-           foreach (var s in events)
-           {
-                var owner = service.GetOwner(s.UserId);
-                eventViews.Add(new EventViewModel {Owner=new UserViewModel { FirstName=owner.FirstName, LastName=owner.LastName },Id = s.Id, Description = s.Description, EventTypeId = s.EventTypeId, Images = s.Images, Lat = s.Lat, Lng = s.Lng, MongoId = s.MongoId, Name = s.Name, ShortDescription = s.ShortDescription, UserId = s.UserId });
-           }
-           return View(eventViews);
-           
+        [HttpGet]
+        public ActionResult Index(string sortOrder,string SearchString)
+        {
+            if (SearchString==null)
+            {
+                var events = service.GetEvents();
+                List<EventViewModel> eventViews = new List<EventViewModel>();
+                foreach (var s in events)
+                {
+                    var owner = service.GetOwner(s.UserId);
+                    eventViews.Add(new EventViewModel { SubsCount = s.SubsCount, Time = s.Time, Owner = new UserViewModel { FirstName = owner.FirstName, LastName = owner.LastName }, Id = s.Id, Description = s.Description, EventTypeId = s.EventTypeId, Images = s.Images, Lat = s.Lat, Lng = s.Lng, MongoId = s.MongoId, Name = s.Name, ShortDescription = s.ShortDescription, UserId = s.UserId });
+                }
+                switch (sortOrder)
+                {
+
+                    case "Date":
+                        eventViews = eventViews.OrderBy(s => s.Time).ToList();
+                        break;
+                    case "SubsCount":
+                        eventViews = eventViews.OrderByDescending(s => s.SubsCount).ToList();
+                        break;
+                }
+                return View(eventViews);
+            }
+            else
+            {
+                Func<Event, bool> searchFunc = d=>d.Name.Contains(SearchString) ||d.ShortDescription.Contains(SearchString) || d.Description.Contains(SearchString);
+                var events = service.Find(searchFunc);
+                List<EventViewModel> eventViews = new List<EventViewModel>();
+                foreach (var s in events)
+                {
+                    var owner = service.GetOwner(s.UserId);
+                    eventViews.Add(new EventViewModel { SubsCount = s.SubsCount, Time = s.Time, Owner = new UserViewModel { FirstName = owner.FirstName, LastName = owner.LastName }, Id = s.Id, Description = s.Description, EventTypeId = s.EventTypeId, Images = s.Images, Lat = s.Lat, Lng = s.Lng, MongoId = s.MongoId, Name = s.Name, ShortDescription = s.ShortDescription, UserId = s.UserId });
+                }
+                return View(eventViews);
+            }
+            
         }
         [HttpGet]
         public ActionResult Create()
         {
             if (StaticVariables.CurrentUser!=null)
             {
-                return View();
+                return View(new EventViewModel { Time=new DateTime()});
             }
             else
             {
@@ -74,7 +100,7 @@ namespace EventManager.Controllers
                 {
                     im.Add(new ImageDTO { Content = e });
                 }
-                service.CreateEvent(new EventDTO { Description = eventView.Description, EventTypeId = 1, Images = im, Lat = eventView.Lat, Lng = eventView.Lng, Name = eventView.Name, ShortDescription = eventView.ShortDescription, UserId = StaticVariables.CurrentUser.Id });
+                service.CreateEvent(new EventDTO {  Time=eventView.Time,Description = eventView.Description, EventTypeId = 1, Images = im, Lat = eventView.Lat, Lng = eventView.Lng, Name = eventView.Name, ShortDescription = eventView.ShortDescription, UserId = StaticVariables.CurrentUser.Id });
                 return RedirectToAction("Index");
             }
             else
@@ -91,7 +117,7 @@ namespace EventManager.Controllers
                 var EEvent = service.GetItem(id);
                 DetailedViewModel detailedView = new DetailedViewModel();
                 CommentViewModel commentView = new CommentViewModel();
-                detailedView.Event = new EventViewModel { Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng };
+                detailedView.Event = new EventViewModel {  Time=EEvent.Time,Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng };
                 detailedView.Comment = commentView;
                 var commentDTOs = service.GetComments(id);
                 List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
@@ -162,6 +188,63 @@ namespace EventManager.Controllers
         {
             service.Unsubscribe(service.GetItem(id), StaticVariables.CurrentUser.Id);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            if (StaticVariables.CurrentUser!=null)
+            {
+                var even = service.GetItem(id);
+                return View(new EventViewModel { Id = even.Id, Description = even.Description, EventTypeId = even.EventTypeId, Images = even.Images, Lat = even.Lat, Lng = even.Lng, MongoId = even.MongoId, Name = even.Name, ShortDescription = even.ShortDescription, UserId = StaticVariables.CurrentUser.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        [HttpPost]
+        public ActionResult Edit(EventViewModel eventView,IEnumerable<HttpPostedFileBase> imgs)
+        {
+            if (eventView.Description == null)
+            {
+                ModelState.AddModelError("Description", "Отсутсвует описание");
+            }
+            if (eventView.ShortDescription == null)
+            {
+                ModelState.AddModelError("ShortDescription", "Отсутсвует краткое описание");
+            }
+            if (eventView.Lat == null && eventView.Lng == null)
+            {
+                ModelState.AddModelError("Lat", "Отсутсвуют координаты");
+            }
+            if (eventView.Lat == null && eventView.Lng == null)
+            {
+                ModelState.AddModelError("Lat", "Отсутсвуют координаты");
+            }
+            if (ModelState.IsValid)
+            {
+                bool imgChanged = false;
+                List<ImageDTO> im = new List<ImageDTO>();
+                if (imgs!=null)
+                {
+                    imgChanged = true;
+                    foreach (var e in imgs)
+                    {
+                        im.Add(new ImageDTO { Content = e });
+                    }
+                }
+                else
+                {
+                   im =service.GetItem(eventView.Id).Images.ToList();
+                }
+                service.Update(new EventDTO { Description = eventView.Description, EventTypeId = 1, Images = im, Lat = eventView.Lat, Lng = eventView.Lng, Name = eventView.Name, ShortDescription = eventView.ShortDescription, UserId = StaticVariables.CurrentUser.Id },imgChanged);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(eventView);
+            }
         }
 
         [HttpGet]

@@ -8,6 +8,8 @@
     <title>@ViewBag.Title – приложение ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet"/>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -30,7 +32,6 @@
                     else
                     {
                         <li>@Html.ActionLink("Подписки", "Subscriptions", "Event")</li>
-                        <li>@Html.ActionLink(StaticVariables.CurrentUser.FirstName, "Profile", "User")</li>
                         <li>@Html.ActionLink("Выход", "Logout", "User")</li>
                     }
                 </ul>
@@ -48,5 +49,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="~/Scripts/site.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ namespace EventMangerBLL.Interfaces
     public interface IEventService
     {
         void CreateEvent(EventDTO item);
-        void Update(EventDTO item);
+        void Update(EventDTO item,bool imgChanged);
         void Delete(EventDTO item);
         void Comment(CommentDTO item);
         void UploadImages(IEnumerable<ImageDTO> items);
