@@ -12,32 +12,31 @@
     <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Event")</li>
-                    @if (StaticVariables.CurrentUser == null)
-                    {
-                        <li>@Html.ActionLink("Регистрация", "Registration", "User")</li>
-                        <li>@Html.ActionLink("Вход", "Login", "User")</li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("Подписки", "Subscriptions", "Event")</li>
-                        <li>@Html.ActionLink("Выход", "Logout", "User")</li>
-                    }
-                </ul>
-            </div>
+    <nav class="navbar navbar-light bg-dark fixed-top">
+        @Html.ActionLink("Главная", "Index", "Event", new { @class = "navbar-brand", @style = "color:white" });
+        @if (StaticVariables.CurrentUser == null)
+        {
+        <div class="nav-item">
+            <a class="nav-link" href="/User/Login">Вход</a>
         </div>
-    </div>
+        <div class="nav-item">
+            <a class="nav-link" href="/User/Registration">Регистрация</a>
+        </div>
+        }
+        else
+        {
+            <div class="nav-item">
+                <a class="nav-link" href="/Event/Subscriptions">Подписки</a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="/User/Logout">Выход</a>
+            </div>
+        }
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
