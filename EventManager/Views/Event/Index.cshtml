@@ -36,7 +36,7 @@
     @foreach (var item in Model)
     {
         <div class="card" style="width:20em">
-            <img class="card-img-top" style="width:17em;height:15em;" src=@Url.Content(item.Images.Last().Link) col alt="Card image cap">
+            <img class="card-img-top " style="width:17em;height:15em;" src=@Url.Content(item.Images.Last().Link) col alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title" id="Name"> @Html.DisplayFor(modelItem => item.Name)</h5>
                 @Html.DisplayFor(modelItem => item.Owner.FirstName)

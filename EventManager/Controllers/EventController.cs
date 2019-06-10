@@ -114,16 +114,16 @@ namespace EventManager.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            if (StaticVariables.CurrentUser!=null)
+            if (StaticVariables.CurrentUser!=null && id!=null)
             {
-                var EEvent = service.GetItem(id);
+                var EEvent = service.GetItem(id.Value);
                 DetailedViewModel detailedView = new DetailedViewModel();
                 CommentViewModel commentView = new CommentViewModel();
                 detailedView.Event = new EventViewModel {  Time=EEvent.Time,Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng };
                 detailedView.Comment = commentView;
-                var commentDTOs = service.GetComments(id);
+                var commentDTOs = service.GetComments(id.Value);
                 List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
                 foreach (var item in commentDTOs)
                 {

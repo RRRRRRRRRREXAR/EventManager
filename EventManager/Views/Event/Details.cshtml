@@ -23,7 +23,7 @@
 
         google.maps.visualRefresh = true;
         // установка основных координат
-        var Minsk = new google.maps.LatLng(53.9045398, 27.5615244);
+        var Minsk = new google.maps.LatLng(@Model.Event.Lat,@Model.Event.Lng);
 
         // Установка общих параметров отображения карты, как масштаб, центральная точка и тип карты
         var mapOptions = {
