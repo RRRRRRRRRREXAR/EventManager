@@ -93,6 +93,10 @@ namespace EventManager.Controllers
             {
                 ModelState.AddModelError("Lat", "Отсутсвуют координаты");
             }
+            if (eventView.Time<=DateTime.Now)
+            {
+                ModelState.AddModelError("Time","Неправильно выбрана дата");
+            }
             if (ModelState.IsValid)
             {
                 List<ImageDTO> im = new List<ImageDTO>();
@@ -146,9 +150,12 @@ namespace EventManager.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var EEvent = service.GetItem(id);
-            return View(new EventViewModel { Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng });
-
+            if (StaticVariables.CurrentUser!=null)
+            {
+                var EEvent = service.GetItem(id);
+                return View(new EventViewModel { Time = EEvent.Time, Id = EEvent.Id, Description = EEvent.Description, EventTypeId = EEvent.EventTypeId, Images = EEvent.Images, MongoId = EEvent.MongoId, Name = EEvent.Name, ShortDescription = EEvent.ShortDescription, UserId = EEvent.UserId, Lat = EEvent.Lat, Lng = EEvent.Lng });
+            }
+            return RedirectToAction("Index");
         }
         [HttpPost]
         public ActionResult Delete(EventViewModel eve)

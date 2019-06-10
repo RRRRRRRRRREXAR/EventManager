@@ -2,40 +2,47 @@
 @using EventManager.Variables;
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title – приложение ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet"/>
-    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet"/>
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui-timepicker-addon.min.css" rel="stylesheet" />
+
 </head>
 <body>
     <nav class="navbar navbar-light bg-dark fixed-top">
-        @Html.ActionLink("Главная", "Index", "Event", new { @class = "navbar-brand", @style = "color:white" });
-        @if (StaticVariables.CurrentUser == null)
-        {
-        <div class="nav-item">
-            <a class="nav-link" href="/User/Login">Вход</a>
+        
+        <div class="navbar">
+            @Html.ActionLink("Главная", "Index", "Event", new { @class = "navbar-brand", @style = "color:white" });
+            <form class="form-inline">
+                <input class="form-control mr-sm-4" type="search" placeholder="Введите что-нибудь для поиска" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+            </form>
         </div>
-        <div class="nav-item">
-            <a class="nav-link" href="/User/Registration">Регистрация</a>
+        <div class="navbar">
+            
+            @if (StaticVariables.CurrentUser == null)
+            {
+                <div class="nav-item">
+                    <a class="nav-link" style="color:white" href="/User/Login">Вход</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" style="color:white" href="/User/Registration">Регистрация</a>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item">
+                    <a class="nav-link" style="color:white" href="/Event/Subscriptions">Подписки</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" style="color:white" href="/User/Logout">Выход</a>
+                </div>
+            }
         </div>
-        }
-        else
-        {
-            <div class="nav-item">
-                <a class="nav-link" href="/Event/Subscriptions">Подписки</a>
-            </div>
-            <div class="nav-item">
-                <a class="nav-link" href="/User/Logout">Выход</a>
-            </div>
-        }
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
     </nav>
     <div class="container body-content">
         @RenderBody()

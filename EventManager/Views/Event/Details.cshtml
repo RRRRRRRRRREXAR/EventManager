@@ -63,8 +63,8 @@
     </script>
 }
 
-<h2>Подробности</h2>
-@using (Html.BeginForm("CreateComment/" + Model.Event.Id, "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+@using (Html.BeginForm("CreateComment/" + Model.Event.Id, "Event", FormMethod.Post, new { enctype = "multipart/form-data", style = "margin-top:5%" }))
 {
     @Html.AntiForgeryToken()
 
@@ -145,7 +145,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Проккомментировать" class="btn btn-default" />
+            <input type="submit" value="Проккомментировать" class="btn btn-primary" />
         </div>
     </div>
 
@@ -156,7 +156,7 @@
     {
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Подписаться" class="btn btn-default" />
+                <input type="submit" value="Подписаться" class="btn btn-primary" />
             </div>
         </div>
     }
@@ -167,7 +167,7 @@ else
     {
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Отписаться" class="btn btn-default" />
+                <input type="submit" value="Отписаться" class="btn btn-primary" />
             </div>
         </div>
     }

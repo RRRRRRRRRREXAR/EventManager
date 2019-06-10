@@ -66,13 +66,12 @@
     </script>
 }
 
-<h2>Создать мероприятие</h2>
 
-@using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Create", "Event", FormMethod.Post, new { enctype = "multipart/form-data" , style = "margin-top:5%" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+<div class="form-horizontal" style="margin-top:5%">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         <label class="control-label col-md-2" for="Name">Название</label>
@@ -108,7 +107,7 @@
 
     <div class="form-group">
         <div class="col-md-10">
-            <input type="file" name="imgs" class="btn-default" multiple /><br>
+            <input type="file" name="imgs" class="form-control-file" multiple /><br>
         </div>
     </div>
 
@@ -120,7 +119,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Создать" class="btn btn-default" />
+            <input type="submit" value="Создать" class="btn btn-primary" />
         </div>
     </div>
 </div>

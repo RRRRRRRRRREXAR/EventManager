@@ -59,9 +59,8 @@
     </script>
 }
 
-<h2>Удаление мероприятия</h2>
 
-@using (Html.BeginForm("Delete", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Delete", "Event", FormMethod.Post, new { enctype = "multipart/form-data", style = "margin-top:5%" }))
 {
     @Html.AntiForgeryToken()
 
@@ -114,7 +113,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Удалить" class="btn btn-default" />
+            <input type="submit" value="Удалить" class="btn btn-primary" />
         </div>
     </div>
 

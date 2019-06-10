@@ -23,12 +23,15 @@
 </div>
 @if (StaticVariables.CurrentUser != null)
 {
-    <p>
-        @Html.ActionLink("Создать новое мероприятие", "Create")
-    </p>
+    <div class="fixed-bottom">
+        <div class="float-right">
+            <form action="/Event/Create">
+                <input type="submit" value="Создать мероприятие" class="btn btn-primary" />
+            </form>
+        </div>
+    </div>
+
 }
-
-
 <div class="container" style="display: flex;display: -webkit-flex;display:-moz-flex;flex-flow: row wrap;-webkit-flex-flow: row wrap;-moz-flex-flow: row wrap;">
     @foreach (var item in Model)
     {
@@ -44,11 +47,13 @@
             <div class="card-body">
                 @if (StaticVariables.CurrentUser != null)
                 {
+                <div class="btn-group">
                     @Html.ActionLink("Подробнее ", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
-                    if (StaticVariables.CurrentUser.Id == item.UserId)
+                    @if (StaticVariables.CurrentUser.Id == item.UserId)
                     {
-                        @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "btn btn-secondary" })
                     }
+                </div>
                 }
             </div>
             <p class="card-footer"> @Html.DisplayFor(modelItem => item.Time)</p>
