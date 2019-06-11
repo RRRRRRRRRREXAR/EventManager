@@ -18,7 +18,7 @@
         <div class="navbar">
             @Html.ActionLink("Главная", "Index", "Event", new { @class = "navbar-brand", @style = "color:white" });
             <form class="form-inline">
-                <input class="form-control mr-sm-4" type="search" placeholder="Введите что-нибудь для поиска" aria-label="Search">
+                <input class="form-control mr-sm-4" name="SearchString" type="search" placeholder="Введите что-нибудь для поиска" aria-label="Search">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Поиск</button>
             </form>
         </div>
